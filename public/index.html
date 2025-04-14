@@ -1,0 +1,142 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndiaNewsHub - Indian Newspapers</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <button id="menu-btn" class="menu-btn">☰</button>
+    <div class="header-content">
+      <img src="logo.png" alt="IndiaNewsHub Logo" class="logo" style="max-width: 50px;">
+      <h1>IndiaNewsHub</h1>
+      <p>All Indian Newspapers in One Place</p>
+    </div>
+    <button id="dark-mode-toggle" class="dark-mode-btn">🌙</button>
+    <div id="profile-container">
+      <button id="profile-btn">
+        <span id="profile-icon">👤</span>
+      </button>
+      <div id="profile-dropdown" style="display: none;">
+        <div class="auth-options">
+          <button id="login-option-btn">Login</button>
+          <button id="signup-option-btn">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="sidebar" class="sidebar">
+    <ul>
+      <li><a href="#" id="home-link">🏠 Home</a></li>
+      <li><a href="#" id="notes-link">📝 Notes</a></li>
+      <li><a href="#" id="videos-link">🎥 Videos</a></li> <!-- New Videos Link -->
+      <li><a href="#" id="favorites-link" style="display: none;">★ Favorites</a></li>
+      <li><a href="#" id="logout-link" style="display: none;">🚪 Logout</a></li>
+    </ul>
+  </div>
+
+  <div id="loading" style="text-align: center; padding: 50px; display: none;">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="main-content">
+    <div id="home-page" class="page" style="display: block;">
+      <section id="headlines" class="headlines-section"></section>
+      <section id="controls">
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-bar" placeholder="Search newspapers...">
+        </div>
+        <select id="language-filter">
+          <option value="">All Languages</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Malayalam">Malayalam</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Gujarati">Gujarati</option>
+          <option value="Kannada">Kannada</option>
+          <option value="Odia">Odia</option>
+        </select>
+        <select id="region-filter">
+          <option value="">All Regions</option>
+          <option value="National">National</option>
+          <option value="North">North</option>
+          <option value="South">South</option>
+          <option value="East">East</option>
+          <option value="West">West</option>
+          <option value="Northeast">Northeast</option>
+        </select>
+        <select id="favorites-filter">
+          <option value="">All Newspapers</option>
+          <option value="favorites">Favorites Only</option>
+        </select>
+      </section>
+      <section id="newspaper-list" class="newspaper-grid"></section>
+      <div id="pagination">
+        <button id="prev-btn" disabled>Previous</button>
+        <span id="page-info"></span>
+        <button id="next-btn">Next</button>
+      </div>
+    </div>
+
+    <div id="notes-page" class="page" style="display: none;">
+      <div id="notes-content">
+        <h2>Your Notes</h2>
+        <textarea id="note-input" placeholder="Write your note here..." rows="4"></textarea>
+        <button id="save-note-btn">Save Note</button>
+        <div id="notes-list"></div>
+      </div>
+    </div>
+
+    <div id="videos-page" class="page" style="display: none;"> <!-- New Videos Page -->
+      <section id="videos-list" class="newspaper-grid"></section>
+      <div id="videos-pagination">
+        <button id="videos-prev-btn" disabled>Previous</button>
+        <span id="videos-page-info"></span>
+        <button id="videos-next-btn">Next</button>
+      </div>
+    </div>
+
+    <div id="login-page" class="page" style="display: none;">
+      <div class="auth-container">
+        <h2>Login</h2>
+        <form id="login-form">
+          <input type="text" id="login-username" placeholder="Username" required>
+          <input type="password" id="login-password" placeholder="Password" required>
+          <button type="submit">Login</button>
+        </form>
+        <p>Not registered? <a href="#" id="show-signup-from-login">Sign Up</a></p>
+        <p id="login-message"></p>
+      </div>
+    </div>
+
+    <div id="signup-page" class="page" style="display: none;">
+      <div class="auth-container">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+          <input type="text" id="signup-username" placeholder="Username" required>
+          <input type="password" id="signup-password" placeholder="Password" required>
+          <button type="submit">Sign Up</button>
+        </form>
+        <p>Already registered? <a href="#" id="show-login-from-signup">Login</a></p>
+        <p id="signup-message"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 IndiaNewsHub | Powered by <a href="https://newsapi.org" target="_blank">NewsAPI</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

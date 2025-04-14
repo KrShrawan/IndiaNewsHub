@@ -1,0 +1,402 @@
+[
+  {
+    "name": "The Times of India",
+    "language": "English",
+    "region": "National",
+    "url": "https://timesofindia.indiatimes.com/",
+    "logo": "/logos/the_times_of_india.webp",
+    "youtube_url": "https://youtube.com/TimesofIndia/videos"
+  },
+  {
+    "name": "The Hindu",
+    "language": "English",
+    "region": "National",
+    "url": "https://www.thehindu.com/",
+    "logo": "/logos/The-Hindu-Logo.jpg",
+    "youtube_url": "https://www.youtube.com/@TheHinduOfficial"
+  },
+  {
+    "name": "Hindustan Times",
+    "language": "English",
+    "region": "National",
+    "url": "https://www.hindustantimes.com/",
+    "logo": "/logos/hindustantimeslogo.png",
+    "youtube_url": "https://www.youtube.com/@HT-Videos"
+  },
+  {
+    "name": "Indian Express",
+    "language": "English",
+    "region": "National",
+    "url": "https://indianexpress.com/",
+    "logo": "/logos/indian_express.png",
+    "youtube_url": "https://www.youtube.com/@indianexpress"
+  },
+  {
+    "name": "Dainik Jagran",
+    "language": "Hindi",
+    "region": "North",
+    "url": "https://www.jagran.com/",
+    "logo": "/logos/Dainik_jagran.jpg",
+    "youtube_url": "https://www.youtube.com/@DainikJagran"
+  },
+  {
+    "name": "Dainik Bhaskar",
+    "language": "Hindi",
+    "region": "North",
+    "url": "https://www.bhaskar.com/",
+    "logo": "/logos/Dainik-Bhaskar-Logo.png",
+    "youtube_url": "https://www.youtube.com/@dainikbhaskar4540"
+  },
+  {
+    "name": "Amar Ujala",
+    "language": "Hindi",
+    "region": "North",
+    "url": "https://www.amarujala.com/",
+    "logo": "/logos/amar-ujala-logo.png",
+    "youtube_url": "https://www.youtube.com/@amarujala"
+  },
+  {
+    "name": "Rajasthan Patrika",
+    "language": "Hindi",
+    "region": "West",
+    "url": "https://www.patrika.com/",
+    "logo": "/logos/rajasthan_patrika.jpg",
+    "youtube_url": "https://www.youtube.com/@RajasthanPatrikaTV"
+  },
+  {
+    "name": "Prabhat Khabar",
+    "language": "Hindi",
+    "region": "East",
+    "url": "https://www.prabhatkhabar.com/",
+    "logo": "/logos/prabhat-khabar-logo.jpg",
+    "youtube_url": "https://www.youtube.com/@PrabhatKhabartv"
+  },
+  {
+    "name": "Punjab Kesari",
+    "language": "Hindi",
+    "region": "North",
+    "url": "https://www.punjabkesari.in/",
+    "logo": "/logos/panjab-keshari-logo.png",
+    "youtube_url": "https://www.youtube.com/@punjabkesaritv"
+  },
+  {
+    "name": "Navbharat Times",
+    "language": "Hindi",
+    "region": "North",
+    "url": "https://navbharattimes.indiatimes.com/",
+    "logo": "/logos/Navbharat_Times.png",
+    "youtube_url": "https://www.youtube.com/@navbharattimes"
+  },
+  {
+    "name": "The Telegraph",
+    "language": "English",
+    "region": "East",
+    "url": "https://www.telegraphindia.com/",
+    "logo": "/logos/the-telegraph-logo-vector.png",
+    "youtube_url": "https://www.youtube.com/@telegraph"
+  },
+  {
+    "name": "Deccan Chronicle",
+    "language": "English",
+    "region": "South",
+    "url": "https://www.deccanchronicle.com/",
+    "logo": "/logos/decan-chronicle-logo.png",
+    "youtube_url": "https://www.youtube.com/@DeccanChronicleOfficial"
+  },
+  {
+    "name": "The Tribune",
+    "language": "English",
+    "region": "North",
+    "url": "https://www.tribuneindia.com/",
+    "logo": "/logos/the-tribune-logo.jpg",
+    "youtube_url": "https://www.youtube.com/@TheTribuneIndia"
+  },
+  {
+    "name": "The Economic Times",
+    "language": "English",
+    "region": "National",
+    "url": "https://economictimes.indiatimes.com/",
+    "logo": "/logos/the-economic-times-logo.jpg",
+    "youtube_url": "https://www.youtube.com/@TheEconomicTimes"
+  },
+  {
+    "name": "The Statesman",
+    "language": "English",
+    "region": "East",
+    "url": "https://www.thestatesman.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/2/27/The_Statesman_Logo.svg/1200px-The_Statesman_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@NewStatesman"
+  },
+  {
+    "name": "Deccan Herald",
+    "language": "English",
+    "region": "South",
+    "url": "https://www.deccanherald.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Deccan_Herald_Logo.svg/1200px-Deccan_Herald_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DeccanHeraldOfficial"
+  },
+  {
+    "name": "Mid-Day",
+    "language": "English",
+    "region": "West",
+    "url": "https://www.mid-day.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Mid_Day_Logo.svg/1200px-Mid_Day_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@MidDayIndia"
+  },
+  {
+    "name": "The Pioneer",
+    "language": "English",
+    "region": "North",
+    "url": "https://www.dailypioneer.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/The_Pioneer_Logo.svg/1200px-The_Pioneer_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@ThePioneerIndia"
+  },
+  {
+    "name": "Free Press Journal",
+    "language": "English",
+    "region": "West",
+    "url": "https://www.freepressjournal.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Free_Press_Journal_Logo.svg/1200px-Free_Press_Journal_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@FreePressJournal"
+  },
+  {
+    "name": "Mathrubhumi",
+    "language": "Malayalam",
+    "region": "South",
+    "url": "https://www.mathrubhumi.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Mathrubhumi_Logo.svg/1200px-Mathrubhumi_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@MathrubhumiNews"
+  },
+  {
+    "name": "Malayala Manorama",
+    "language": "Malayalam",
+    "region": "South",
+    "url": "https://www.manoramaonline.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Malayala_Manorama_Logo.svg/1200px-Malayala_Manorama_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@ManoramaNews"
+  },
+  {
+    "name": "Dinakaran",
+    "language": "Tamil",
+    "region": "South",
+    "url": "https://www.dinakaran.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Dinakaran_Logo.svg/1200px-Dinakaran_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DinakaranNews"
+  },
+  {
+    "name": "Daily Thanthi",
+    "language": "Tamil",
+    "region": "South",
+    "url": "https://www.dailythanthi.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Daily_Thanthi_Logo.svg/1200px-Daily_Thanthi_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DailyThanthiNews"
+  },
+  {
+    "name": "Dinamalar",
+    "language": "Tamil",
+    "region": "South",
+    "url": "https://www.dinamalar.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Dinamalar_Logo.svg/1200px-Dinamalar_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DinamalarNews"
+  },
+  {
+    "name": "Eenadu",
+    "language": "Telugu",
+    "region": "South",
+    "url": "https://www.eenadu.net/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Eenadu_Logo.svg/1200px-Eenadu_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@EenaduNewsOfficial"
+  },
+  {
+    "name": "Sakshi",
+    "language": "Telugu",
+    "region": "South",
+    "url": "https://www.sakshi.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Sakshi_Logo.svg/1200px-Sakshi_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@SakshiTVLIVE"
+  },
+  {
+    "name": "Andhra Jyothi",
+    "language": "Telugu",
+    "region": "South",
+    "url": "https://www.andhrajyothy.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Andhra_Jyothi_Logo.svg/1200px-Andhra_Jyothi_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@AndhraJyothyNews"
+  },
+  {
+    "name": "The New Indian Express",
+    "language": "English",
+    "region": "South",
+    "url": "https://www.newindianexpress.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/The_New_Indian_Express_Logo.svg/1200px-The_New_Indian_Express_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@NewIndianExpressOnline"
+  },
+  {
+    "name": "The Assam Tribune",
+    "language": "English",
+    "region": "Northeast",
+    "url": "https://assamtribune.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/The_Assam_Tribune_Logo.svg/1200px-The_Assam_Tribune_Logo.svg.png",
+    "youtube_url": ""
+  },
+  {
+    "name": "Anandabazar Patrika",
+    "language": "Bengali",
+    "region": "East",
+    "url": "https://www.anandabazar.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Anandabazar_Patrika_Logo.svg/1200px-Anandabazar_Patrika_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@AnandabazarPatrika"
+  },
+  {
+    "name": "Bartaman",
+    "language": "Bengali",
+    "region": "East",
+    "url": "https://bartamanpatrika.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Bartaman_Logo.svg/1200px-Bartaman_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@BartamanPatrikaOfficial"
+  },
+  {
+    "name": "Sangbad Pratidin",
+    "language": "Bengali",
+    "region": "East",
+    "url": "https://www.sangbadpratidin.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Sangbad_Pratidin_Logo.svg/1200px-Sangbad_Pratidin_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@SangbadPratidinOfficial"
+  },
+  {
+    "name": "Lokmat",
+    "language": "Marathi",
+    "region": "West",
+    "url": "https://www.lokmat.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Lokmat_Logo.svg/1200px-Lokmat_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@LokmatNews"
+  },
+  {
+    "name": "Sakal",
+    "language": "Marathi",
+    "region": "West",
+    "url": "https://www.esakal.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Sakal_Logo.svg/1200px-Sakal_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@SakalMedia"
+  },
+  {
+    "name": "Maharashtra Times",
+    "language": "Marathi",
+    "region": "West",
+    "url": "https://maharashtratimes.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Maharashtra_Times_Logo.svg/1200px-Maharashtra_Times_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@MaharashtraTimesOnline"
+  },
+  {
+    "name": "Divya Bhaskar",
+    "language": "Gujarati",
+    "region": "West",
+    "url": "https://www.divyabhaskar.co.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Divya_Bhaskar_Logo.svg/1200px-Divya_Bhaskar_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DivyaBhaskarNews"
+  },
+  {
+    "name": "Gujarat Samachar",
+    "language": "Gujarati",
+    "region": "West",
+    "url": "https://www.gujaratsamachar.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Gujarat_Samachar_Logo.svg/1200px-Gujarat_Samachar_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@GujaratSamacharOfficial"
+  },
+  {
+    "name": "Sandesh",
+    "language": "Gujarati",
+    "region": "West",
+    "url": "https://www.sandesh.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Sandesh_Logo.svg/1200px-Sandesh_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@SandeshNews"
+  },
+  {
+    "name": "Kannada Prabha",
+    "language": "Kannada",
+    "region": "South",
+    "url": "https://www.kannadaprabha.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Kannada_Prabha_Logo.svg/1200px-Kannada_Prabha_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@KannadaPrabhaOfficial"
+  },
+  {
+    "name": "Vijaya Karnataka",
+    "language": "Kannada",
+    "region": "South",
+    "url": "https://vijaykarnataka.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Vijaya_Karnataka_Logo.svg/1200px-Vijaya_Karnataka_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@VijayaKarnatakaNews"
+  },
+  {
+    "name": "Prajavani",
+    "language": "Kannada",
+    "region": "South",
+    "url": "https://www.prajavani.net/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Prajavani_Logo.svg/1200px-Prajavani_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@PrajavaniNews"
+  },
+  {
+    "name": "Sambad",
+    "language": "Odia",
+    "region": "East",
+    "url": "https://sambad.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Sambad_Logo.svg/1200px-Sambad_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@SambadOfficial"
+  },
+  {
+    "name": "Dharitri",
+    "language": "Odia",
+    "region": "East",
+    "url": "https://www.dharitri.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Dharitri_Logo.svg/1200px-Dharitri_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@DharitriNews"
+  },
+  {
+    "name": "The Samaja",
+    "language": "Odia",
+    "region": "East",
+    "url": "https://www.thesamaja.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/The_Samaja_Logo.svg/1200px-The_Samaja_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@TheSamajaOfficial"
+  },
+  {
+    "name": "Nagaland Post",
+    "language": "English",
+    "region": "Northeast",
+    "url": "https://www.nagalandpost.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Nagaland_Post_Logo.svg/1200px-Nagaland_Post_Logo.svg.png",
+    "youtube_url": "" 
+  },
+  {
+    "name": "The Shillong Times",
+    "language": "English",
+    "region": "Northeast",
+    "url": "https://theshillongtimes.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/The_Shillong_Times_Logo.svg/1200px-The_Shillong_Times_Logo.svg.png",
+    "youtube_url": "https://www.youtube.com/@TheShillongTimes"
+  },
+  {
+    "name": "Imphal Free Press",
+    "language": "English",
+    "region": "Northeast",
+    "url": "https://www.ifp.co.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Imphal_Free_Press_Logo.svg/1200px-Imphal_Free_Press_Logo.svg.png",
+    "youtube_url": "" 
+  },
+  {
+    "name": "The Arunachal Times",
+    "language": "English",
+    "region": "Northeast",
+    "url": "https://arunachaltimes.in/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/The_Arunachal_Times_Logo.svg/1200px-The_Arunachal_Times_Logo.svg.png",
+    "youtube_url": ""
+  },
+  {
+    "name": "The Kashmir Times",
+    "language": "English",
+    "region": "North",
+    "url": "https://www.kashmirtimes.com/",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/The_Kashmir_Times_Logo.svg/1200px-The_Kashmir_Times_Logo.svg.png",
+    "youtube_url": ""
+  }
+]
