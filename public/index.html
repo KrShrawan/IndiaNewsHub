@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +10,10 @@
 <body>
   <header>
     <button id="menu-btn" class="menu-btn">☰</button>
+    <div class="date-display">
+      <span id="current-date"></span>
+      <span id="current-day"></span>
+    </div>
     <div class="header-content">
       <img src="logo.png" alt="IndiaNewsHub Logo" class="logo" style="max-width: 50px;">
       <h1>IndiaNewsHub</h1>
@@ -24,8 +26,10 @@
       </button>
       <div id="profile-dropdown" style="display: none;">
         <div class="auth-options">
+          <button id="account-option-btn">Your Account</button>
           <button id="login-option-btn">Login</button>
           <button id="signup-option-btn">Sign Up</button>
+          <button id="history-option-btn">History</button>
         </div>
       </div>
     </div>
@@ -35,7 +39,7 @@
     <ul>
       <li><a href="#" id="home-link">🏠 Home</a></li>
       <li><a href="#" id="notes-link">📝 Notes</a></li>
-      <li><a href="#" id="videos-link">🎥 Videos</a></li> <!-- New Videos Link -->
+      <li><a href="#" id="videos-link">🎥 Videos</a></li>
       <li><a href="#" id="favorites-link" style="display: none;">★ Favorites</a></li>
       <li><a href="#" id="logout-link" style="display: none;">🚪 Logout</a></li>
     </ul>
@@ -97,7 +101,7 @@
       </div>
     </div>
 
-    <div id="videos-page" class="page" style="display: none;"> <!-- New Videos Page -->
+    <div id="videos-page" class="page" style="display: none;">
       <section id="videos-list" class="newspaper-grid"></section>
       <div id="videos-pagination">
         <button id="videos-prev-btn" disabled>Previous</button>
@@ -131,6 +135,21 @@
         <p id="signup-message"></p>
       </div>
     </div>
+
+    <div id="account-page" class="page" style="display: none;">
+      <div class="auth-container">
+        <h2>Your Account</h2>
+        <p id="account-username"></p>
+        <button id="logout-from-account">Logout</button>
+      </div>
+    </div>
+
+    <div id="history-page" class="page" style="display: none;">
+      <div id="history-content">
+        <h2>Your Visit History</h2>
+        <div id="history-list"></div>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -138,5 +157,5 @@
   </footer>
 
   <script src="script.js"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'933603f73e57adde',t:'MTc0NTE2NjUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

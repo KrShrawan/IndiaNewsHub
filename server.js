@@ -1,388 +1,5 @@
-
-
-// const express = require('express');
-// const sqlite3 = require('sqlite3').verbose();
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcrypt');
-// const sanitizeHtml = require('sanitize-html');
-// const NewsAPI = require('newsapi'); // Correct import
-// const path = require('path');
-// require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-
-// console.log('Loading .env from:', path.resolve(__dirname, '.env'));
-// console.log('JWT_SECRET:', process.env.JWT_SECRET ? '[REDACTED]' : 'undefined');
-// console.log('NEWSAPI_KEY:', process.env.NEWSAPI_KEY ? '[REDACTED]' : 'undefined');
-
-// const app = express();
-// const port = 3000;
-
-// const newspapers = require('./newspapers.json');
-
-// const JWT_SECRET = process.env.JWT_SECRET;
-// if (!JWT_SECRET) throw new Error('JWT_SECRET must be set in .env');
-// const saltRounds = 10;
-// const newsapi = new NewsAPI(process.env.NEWSAPI_KEY); // Correct instantiation
-// if (!process.env.NEWSAPI_KEY) throw new Error('NEWSAPI_KEY must be set in .env');
-
-// app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
-// app.use(express.json());
-
-// // SQLite Database Setup
-// const db = new sqlite3.Database('./newsmania.db', (err) => {
-//   if (err) {
-//     console.error('Error opening database:', err.message);
-//   } else {
-//     console.log('Connected to SQLite database: newsmania.db');
-//     db.run(`CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL)`, (err) => {
-//       if (err) console.error('Error creating users table:', err.message);
-//     });
-//     db.run(`CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, note TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY (username) REFERENCES users(username))`, (err) => {
-//       if (err) console.error('Error creating notes table:', err.message);
-//     });
-//     db.run(`CREATE TABLE IF NOT EXISTS favorites (username TEXT, newspaper_id TEXT, FOREIGN KEY (username) REFERENCES users(username), PRIMARY KEY (username, newspaper_id))`, (err) => {
-//       if (err) console.error('Error creating favorites table:', err.message);
-//     });
-//     db.run(`CREATE TABLE IF NOT EXISTS preferences (username TEXT PRIMARY KEY, headline_sources TEXT, FOREIGN KEY (username) REFERENCES users(username))`, (err) => {
-//       if (err) console.error('Error creating preferences table:', err.message);
-//     });
-//     db.run(`CREATE INDEX IF NOT EXISTS idx_notes_username ON notes (username)`);
-//     db.run(`CREATE INDEX IF NOT EXISTS idx_favorites_username ON favorites (username)`);
-//   }
-// });
-
-// // Middleware
-// const verifyToken = (req, res, next) => {
-//   const token = req.headers['authorization']?.split(' ')[1];
-//   if (!token) return res.status(401).json({ success: false, message: 'Token required' });
-//   jwt.verify(token, JWT_SECRET, (err, decoded) => {
-//     if (err) return res.status(401).json({ success: false, message: 'Invalid or expired token' });
-//     req.user = decoded;
-//     next();
-//   });
-// };
-
-// // Error Handling Middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ success: false, error: 'Internal server error' });
-// });
-
-// // Authentication Endpoints
-// app.post('/api/login', async (req, res, next) => {
-//   const { username, password } = req.body;
-//   if (!username || !password || username.length < 3 || password.length < 6) {
-//     return res.status(400).json({ success: false, message: 'Username (min 3 chars) and password (min 6 chars) are required' });
-//   }
-
-//   try {
-//     db.get('SELECT * FROM users WHERE username = ?', [username], async (err, row) => {
-//       if (err) return next(err);
-//       if (row && await bcrypt.compare(password, row.password)) {
-//         const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '30d' });
-//         res.json({ success: true, message: 'Login successful', username, token });
-//       } else {
-//         res.status(401).json({ success: false, message: 'Invalid username or password' });
-//       }
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// app.post('/api/signup', async (req, res, next) => {
-//   const { username, password } = req.body;
-//   if (!username || !password || username.length < 3 || password.length < 6) {
-//     return res.status(400).json({ success: false, message: 'Username (min 3 chars) and password (min 6 chars) are required' });
-//   }
-
-//   try {
-//     db.get('SELECT * FROM users WHERE username = ?', [username], async (err, row) => {
-//       if (err) return next(err);
-//       if (row) return res.status(409).json({ success: false, message: 'Username already exists' });
-
-//       const hashedPassword = await bcrypt.hash(password, saltRounds);
-//       db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
-//         if (err) return next(err);
-//         res.json({ success: true, message: 'Signup successful. Please login.' });
-//       });
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// app.post('/api/verify-token', (req, res) => {
-//   const { token } = req.body;
-//   if (!token) return res.status(400).json({ success: false, message: 'Token required' });
-
-//   jwt.verify(token, JWT_SECRET, (err, decoded) => {
-//     if (err) return res.status(401).json({ success: false, message: 'Invalid or expired token' });
-//     res.json({ success: true, username: decoded.username });
-//   });
-// });
-
-// // Notes Endpoints with Pagination
-// app.get('/api/notes', verifyToken, (req, res, next) => {
-//   const { username } = req.user;
-//   const { page = 1, limit = 10 } = req.query;
-//   const offset = (page - 1) * limit;
-
-//   db.all('SELECT id, note, date FROM notes WHERE username = ? ORDER BY date DESC LIMIT ? OFFSET ?', 
-//     [username, parseInt(limit), parseInt(offset)], (err, rows) => {
-//       if (err) return next(err);
-//       db.get('SELECT COUNT(*) as total FROM notes WHERE username = ?', [username], (err, countRow) => {
-//         if (err) return next(err);
-//         res.json({ 
-//           success: true, 
-//           notes: rows || [], 
-//           pagination: { 
-//             page: parseInt(page), 
-//             limit: parseInt(limit), 
-//             total: countRow.total 
-//           }
-//         });
-//       });
-//   });
-// });
-
-// app.post('/api/notes', verifyToken, (req, res, next) => {
-//   const { note } = req.body;
-//   const { username } = req.user;
-//   if (!note) return res.status(400).json({ success: false, message: 'Note is required' });
-
-//   const sanitizedNote = sanitizeHtml(note, { allowedTags: [], allowedAttributes: {} });
-//   const date = new Date().toISOString().split('T')[0];
-//   db.run('INSERT INTO notes (username, note, date) VALUES (?, ?, ?)', [username, sanitizedNote, date], function(err) {
-//     if (err) return next(err);
-//     res.json({ success: true, message: 'Note saved', id: this.lastID });
-//   });
-// });
-
-// app.put('/api/notes/:id', verifyToken, (req, res, next) => {
-//   const { note } = req.body;
-//   const { id } = req.params;
-//   const { username } = req.user;
-//   if (!note) return res.status(400).json({ success: false, message: 'Note is required' });
-
-//   const sanitizedNote = sanitizeHtml(note, { allowedTags: [], allowedAttributes: {} });
-//   db.run('UPDATE notes SET note = ? WHERE id = ? AND username = ?', [sanitizedNote, id, username], function(err) {
-//     if (err) return next(err);
-//     if (this.changes === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
-//     res.json({ success: true, message: 'Note updated' });
-//   });
-// });
-
-// app.delete('/api/notes/:id', verifyToken, (req, res, next) => {
-//   const { id } = req.params;
-//   const { username } = req.user;
-//   db.run('DELETE FROM notes WHERE id = ? AND username = ?', [id, username], function(err) {
-//     if (err) return next(err);
-//     if (this.changes === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
-//     res.json({ success: true, message: 'Note deleted' });
-//   });
-// });
-
-// // Favorites Endpoints with Pagination
-// app.get('/api/favorites', verifyToken, (req, res, next) => {
-//   const { username } = req.user;
-//   const { page = 1, limit = 10 } = req.query;
-//   const offset = (page - 1) * limit;
-
-//   db.all('SELECT newspaper_id FROM favorites WHERE username = ? LIMIT ? OFFSET ?', 
-//     [username, parseInt(limit), parseInt(offset)], (err, rows) => {
-//       if (err) return next(err);
-//       db.get('SELECT COUNT(*) as total FROM favorites WHERE username = ?', [username], (err, countRow) => {
-//         if (err) return next(err);
-//         res.json({ 
-//           success: true, 
-//           favorites: rows.map(row => row.newspaper_id), 
-//           pagination: { 
-//             page: parseInt(page), 
-//             limit: parseInt(limit), 
-//             total: countRow.total 
-//           }
-//         });
-//       });
-//   });
-// });
-
-// app.post('/api/favorites', verifyToken, (req, res, next) => {
-//   const { newspaper_id } = req.body;
-//   const { username } = req.user;
-//   if (!newspaper_id) return res.status(400).json({ success: false, message: 'Newspaper ID is required' });
-
-//   db.run('INSERT OR IGNORE INTO favorites (username, newspaper_id) VALUES (?, ?)', [username, newspaper_id], (err) => {
-//     if (err) return next(err);
-//     res.json({ success: true, message: 'Newspaper added to favorites' });
-//   });
-// });
-
-// app.delete('/api/favorites/:newspaper_id', verifyToken, (req, res, next) => {
-//   const { newspaper_id } = req.params;
-//   const { username } = req.user;
-//   db.run('DELETE FROM favorites WHERE username = ? AND newspaper_id = ?', [username, newspaper_id], function(err) {
-//     if (err) return next(err);
-//     if (this.changes === 0) return res.status(404).json({ success: false, message: 'Favorite not found' });
-//     res.json({ success: true, message: 'Newspaper removed from favorites' });
-//   });
-// });
-
-// // User Preferences for Headlines
-// app.post('/api/preferences', verifyToken, (req, res, next) => {
-//   const { headline_sources } = req.body;
-//   const { username } = req.user;
-//   if (!Array.isArray(headline_sources)) return res.status(400).json({ success: false, message: 'Headline sources must be an array' });
-
-//   const sources = JSON.stringify(headline_sources);
-//   db.run('INSERT OR REPLACE INTO preferences (username, headline_sources) VALUES (?, ?)', [username, sources], (err) => {
-//     if (err) return next(err);
-//     res.json({ success: true, message: 'Preferences updated' });
-//   });
-// });
-
-// app.get('/api/preferences', verifyToken, (req, res, next) => {
-//   const { username } = req.user;
-//   db.get('SELECT headline_sources FROM preferences WHERE username = ?', [username], (err, row) => {
-//     if (err) return next(err);
-//     res.json({ 
-//       success: true, 
-//       headline_sources: row ? JSON.parse(row.headline_sources) : [] 
-//     });
-//   });
-// });
-
-// // Newspapers Endpoint
-// app.get('/api/newspapers', (req, res) => {
-//   const enhancedNewspapers = newspapers.map(n => ({
-//     ...n,
-//     id: n.id || n.name.replace(/\s+/g, '-').toLowerCase()
-//   }));
-//   res.json(enhancedNewspapers);
-// });
-
-// // RSS Feed Endpoint
-// app.get('/api/rss/:newspaper_id', async (req, res, next) => {
-//   const { newspaper_id } = req.params;
-//   const newspaper = newspapers.find(n => (n.id || n.name.replace(/\s+/g, '-').toLowerCase()) === newspaper_id);
-//   if (!newspaper || !newspaper.rss) {
-//     return res.status(404).json({ success: false, message: 'RSS feed not available for this newspaper' });
-//   }
-
-//   const fetch = (await import('node-fetch')).default;
-//   const xml2js = require('xml2js');
-//   try {
-//     const response = await fetch(newspaper.rss);
-//     if (!response.ok) throw new Error(`Failed to fetch RSS feed: ${response.statusText}`);
-//     const xml = await response.text();
-//     xml2js.parseString(xml, (err, result) => {
-//       if (err) throw err;
-//       const items = (result.rss?.channel[0]?.item || []).slice(0, 5).map(item => ({
-//         title: item.title?.[0] || 'No title',
-//         link: item.link?.[0] || '#',
-//         pubDate: item.pubDate?.[0] || null,
-//       }));
-//       res.json({ success: true, articles: items });
-//     });
-//   } catch (error) {
-//     console.error('RSS fetch error:', error.message);
-//     next(error);
-//   }
-// });
-
-// // News Headlines with Preferences and Fallback
-// app.get('/api/headlines', async (req, res, next) => {
-//   const { username } = req.user || {};
-//   let preferredSources = [];
-
-//   if (username) {
-//     await new Promise((resolve) => {
-//       db.get('SELECT headline_sources FROM preferences WHERE username = ?', [username], (err, row) => {
-//         if (!err && row) preferredSources = JSON.parse(row.headline_sources);
-//         resolve();
-//       });
-//     });
-//   }
-
-//   try {
-//     const sources = preferredSources.length ? preferredSources.join(',') : 'the-times-of-india,the-hindu';
-//     const response = await newsapi.v2.topHeadlines({
-//       country: 'in',
-//       sources,
-//       pageSize: 5,
-//     });
-//     if (response.status !== 'ok') throw new Error('NewsAPI response not OK');
-//     const headlines = response.articles.map(a => ({
-//       title: a.title,
-//       source: a.source.name,
-//       url: a.url
-//     }));
-//     res.json({ success: true, headlines });
-//   } catch (error) {
-//     console.error('NewsAPI error:', error.message);
-//     const mockHeadlines = [
-//       { title: 'Breaking: Major Event in India', source: 'Example News', url: '#' },
-//       { title: 'Weather Update: Rain Expected', source: 'Weather Today', url: '#' },
-//       { title: 'Tech Breakthrough Announced', source: 'Tech Times', url: '#' },
-//     ];
-//     res.json({ success: true, headlines: mockHeadlines, message: 'Using fallback data due to API error' });
-//   }
-// });
-
-// // Start Server
-// app.listen(port, () => {
-//   console.log(`Server running at http://localhost:${port}`);
-// });
-
-// // Graceful Shutdown
-// process.on('SIGINT', () => {
-//   db.close((err) => {
-//     if (err) console.error('Error closing database:', err.message);
-//     console.log('Database closed.');
-//     process.exit(0);
-//   });
-// });
-
-// app.get('/api/headlines', async (req, res, next) => {
-//   const { username } = req.user || {};
-//   let preferredSources = [];
-
-//   if (username) {
-//     await new Promise((resolve) => {
-//       db.get('SELECT headline_sources FROM preferences WHERE username = ?', [username], (err, row) => {
-//         if (!err && row) preferredSources = JSON.parse(row.headline_sources);
-//         resolve();
-//       });
-//     });
-//   }
-
-//   try {
-//     const sources = preferredSources.length ? preferredSources.join(',') : 'the-times-of-india,the-hindu';
-//     console.log('Fetching headlines from NewsAPI with sources:', sources);
-//     const response = await newsapi.v2.topHeadlines({
-//       country: 'in',
-//       sources,
-//       pageSize: 5,
-//     });
-//     if (response.status !== 'ok') throw new Error('NewsAPI response not OK');
-//     const headlines = response.articles.map(a => ({
-//       title: a.title,
-//       source: a.source.name,
-//       url: a.url
-//     }));
-//     res.json({ success: true, headlines });
-//   } catch (error) {
-//     console.error('NewsAPI error:', error.message);
-//     const mockHeadlines = [
-//       { title: 'Breaking: Major Event in India', source: 'Example News', url: '#' },
-//       { title: 'Weather Update: Rain Expected', source: 'Weather Today', url: '#' },
-//       { title: 'Tech Breakthrough Announced', source: 'Tech Times', url: '#' },
-//     ];
-//     res.json({ success: true, headlines: mockHeadlines, message: 'Using fallback data due to API error' });
-//   }
-// });
-
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require('mysql2/promise');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const sanitizeHtml = require('sanitize-html');
@@ -405,33 +22,216 @@ const saltRounds = 10;
 const newsapi = new NewsAPI(process.env.NEWSAPI_KEY);
 if (!process.env.NEWSAPI_KEY) throw new Error('NEWSAPI_KEY must be set in .env');
 
+// In-memory cache for NewsAPI responses
+const headlineCache = new Map();
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
+// Request queue for throttling NewsAPI calls
+const requestQueue = [];
+let isProcessingQueue = false;
+const REQUEST_INTERVAL = 1000; // 1 second between requests
+const MAX_REQUESTS_PER_MINUTE = 10; // Conservative limit to stay under 50/12hr
+
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'indianewshub',
+  password: 'IndiaNews2025',
+  database: 'indianewshub',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+async function initializeDatabase() {
+  try {
+    const connection = await pool.getConnection();
+    console.log('Connected to MySQL database: indianewshub');
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        username VARCHAR(255) PRIMARY KEY,
+        password TEXT NOT NULL,
+        is_admin BOOLEAN DEFAULT FALSE
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS notes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255),
+        note TEXT NOT NULL,
+        date VARCHAR(10) NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS favorites (
+        username VARCHAR(255),
+        newspaper_id VARCHAR(255),
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+        PRIMARY KEY (username, newspaper_id)
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS preferences (
+        username VARCHAR(255) PRIMARY KEY,
+        headline_sources TEXT,
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS visits (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255),
+        newspaper_id VARCHAR(255),
+        visit_date VARCHAR(255) NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS login_events (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL,
+        login_time DATETIME NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS active_sessions (
+        token VARCHAR(512) PRIMARY KEY,
+        username VARCHAR(255) NOT NULL,
+        expiry BIGINT NOT NULL,
+        FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+      )
+    `);
+
+    // Clean up expired sessions on startup
+    await connection.query('DELETE FROM active_sessions WHERE expiry < ?', [Date.now()]);
+
+    try {
+      await connection.query(`CREATE INDEX idx_notes_username ON notes (username)`);
+    } catch (indexErr) {
+      if (indexErr.code !== 'ER_DUP_KEYNAME') {
+        console.error('Error creating idx_notes_username:', indexErr.message);
+      }
+    }
+
+    try {
+      await connection.query(`CREATE INDEX idx_favorites_username ON favorites (username)`);
+    } catch (indexErr) {
+      if (indexErr.code !== 'ER_DUP_KEYNAME') {
+        console.error('Error creating idx_favorites_username:', indexErr.message);
+      }
+    }
+
+    try {
+      await connection.query(`CREATE INDEX idx_visits_username ON visits (username)`);
+    } catch (indexErr) {
+      if (indexErr.code !== 'ER_DUP_KEYNAME') {
+        console.error('Error creating idx_visits_username:', indexErr.message);
+      }
+    }
+
+    connection.release();
+    console.log('Database schema initialized');
+  } catch (err) {
+    console.error('Error initializing database:', err.message);
+    process.exit(1);
+  }
+}
+
+// Throttle NewsAPI requests
+async function enqueueNewsAPIRequest(fn) {
+  return new Promise((resolve, reject) => {
+    requestQueue.push({ fn, resolve, reject });
+    processQueue();
+  });
+}
+
+async function processQueue() {
+  if (isProcessingQueue || requestQueue.length === 0) return;
+  isProcessingQueue = true;
+
+  const { fn, resolve, reject } = requestQueue.shift();
+  try {
+    const result = await fn();
+    resolve(result);
+  } catch (error) {
+    reject(error);
+  }
+
+  setTimeout(() => {
+    isProcessingQueue = false;
+    processQueue();
+  }, REQUEST_INTERVAL);
+}
+
+// Preload cache for all newspapers
+async function preloadCache() {
+  console.log('Preloading cache for top headlines and newspapers...');
+  
+  // Fetch top headlines
+  try {
+    const topHeadlines = await enqueueNewsAPIRequest(() =>
+      newsapi.v2.topHeadlines({ q: 'news', pageSize: 5 })
+    );
+    if (topHeadlines.status === 'ok') {
+      const headlines = topHeadlines.articles.map(a => ({
+        title: a.title || 'No title',
+        source: a.source.name || 'Unknown source',
+        url: a.url || '#',
+        urlToImage: a.urlToImage || null,
+        publishedAt: a.publishedAt || null
+      }));
+      headlineCache.set('top-headlines', {
+        data: headlines,
+        expiry: Date.now() + CACHE_DURATION
+      });
+      console.log('Cached top headlines');
+    }
+  } catch (error) {
+    console.error('Error preloading top headlines:', error.message);
+  }
+
+  // Fetch headlines for all newspapers with valid sourceId
+  const validNewspapers = newspapers.filter(n => n.sourceId);
+  const sourceIds = validNewspapers.map(n => n.sourceId).join(',');
+  try {
+    const response = await enqueueNewsAPIRequest(() =>
+      newsapi.v2.everything({ sources: sourceIds, pageSize: 30, sortBy: 'publishedAt' })
+    );
+    if (response.status === 'ok') {
+      validNewspapers.forEach(newspaper => {
+        const headlines = response.articles
+          .filter(a => a.source.id === newspaper.sourceId)
+          .slice(0, 3)
+          .map(a => ({
+            title: a.title || 'No title',
+            url: a.url || '#',
+            publishedAt: a.publishedAt || null
+          }));
+        headlineCache.set(`headlines-${newspaper.id}`, {
+          data: headlines,
+          expiry: Date.now() + CACHE_DURATION
+        });
+        console.log(`Cached headlines for ${newspaper.id}`);
+      });
+    }
+  } catch (error) {
+    console.error('Error preloading newspaper headlines:', error.message);
+  }
+}
+
+initializeDatabase().then(() => preloadCache());
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-// SQLite Database Setup
-const db = new sqlite3.Database('./newsmania.db', (err) => {
-  if (err) {
-    console.error('Error opening database:', err.message);
-  } else {
-    console.log('Connected to SQLite database: newsmania.db');
-    db.run(`CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL)`, (err) => {
-      if (err) console.error('Error creating users table:', err.message);
-    });
-    db.run(`CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, note TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY (username) REFERENCES users(username))`, (err) => {
-      if (err) console.error('Error creating notes table:', err.message);
-    });
-    db.run(`CREATE TABLE IF NOT EXISTS favorites (username TEXT, newspaper_id TEXT, FOREIGN KEY (username) REFERENCES users(username), PRIMARY KEY (username, newspaper_id))`, (err) => {
-      if (err) console.error('Error creating favorites table:', err.message);
-    });
-    db.run(`CREATE TABLE IF NOT EXISTS preferences (username TEXT PRIMARY KEY, headline_sources TEXT, FOREIGN KEY (username) REFERENCES users(username))`, (err) => {
-      if (err) console.error('Error creating preferences table:', err.message);
-    });
-    db.run(`CREATE INDEX IF NOT EXISTS idx_notes_username ON notes (username)`);
-    db.run(`CREATE INDEX IF NOT EXISTS idx_favorites_username ON favorites (username)`);
-  }
-});
-
-// Middleware
 const verifyToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ success: false, message: 'Token required' });
@@ -442,28 +242,53 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-// Error Handling Middleware
+const verifyAdmin = async (req, res, next) => {
+  const { username } = req.user;
+  try {
+    const [rows] = await pool.query('SELECT is_admin FROM users WHERE username = ?', [username]);
+    if (rows.length === 0 || !rows[0].is_admin) {
+      return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+    next();
+  } catch (err) {
+    console.error('Error verifying admin:', err.message);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, error: 'Internal server error' });
 });
 
-// Authentication Endpoints
 app.post('/api/login', async (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password || username.length < 3 || password.length < 6) {
     return res.status(400).json({ success: false, message: 'Username (min 3 chars) and password (min 6 chars) are required' });
   }
   try {
-    db.get('SELECT * FROM users WHERE username = ?', [username], async (err, row) => {
-      if (err) return next(err);
-      if (row && await bcrypt.compare(password, row.password)) {
-        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '30d' });
-        res.json({ success: true, message: 'Login successful', username, token });
-      } else {
-        res.status(401).json({ success: false, message: 'Invalid username or password' });
-      }
-    });
+    const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+    const row = rows[0];
+    if (row && await bcrypt.compare(password, row.password)) {
+      const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '30d' });
+      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+      
+      // Record login event
+      await pool.query(
+        'INSERT INTO login_events (username, login_time) VALUES (?, NOW())',
+        [username]
+      );
+      
+      // Store active session
+      await pool.query(
+        'INSERT INTO active_sessions (token, username, expiry) VALUES (?, ?, ?)',
+        [token, username, expiry]
+      );
+      
+      res.json({ success: true, message: 'Login successful', username, token });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid username or password' });
+    }
   } catch (err) {
     next(err);
   }
@@ -475,15 +300,14 @@ app.post('/api/signup', async (req, res, next) => {
     return res.status(400).json({ success: false, message: 'Username (min 3 chars) and password (min 6 chars) are required' });
   }
   try {
-    db.get('SELECT * FROM users WHERE username = ?', [username], async (err, row) => {
-      if (err) return next(err);
-      if (row) return res.status(409).json({ success: false, message: 'Username already exists' });
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
-        if (err) return next(err);
-        res.json({ success: true, message: 'Signup successful. Please login.' });
-      });
-    });
+    const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+    if (rows.length > 0) return res.status(409).json({ success: false, message: 'Username already exists' });
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    await pool.query(
+      'INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)',
+      [username, hashedPassword, username === 'admin' ? 1 : 0]
+    );
+    res.json({ success: true, message: 'Signup successful. Please login.' });
   } catch (err) {
     next(err);
   }
@@ -498,131 +322,214 @@ app.post('/api/verify-token', (req, res) => {
   });
 });
 
-// Notes Endpoints
-app.get('/api/notes', verifyToken, (req, res, next) => {
+app.post('/api/logout', verifyToken, async (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  try {
+    await pool.query('DELETE FROM active_sessions WHERE token = ?', [token]);
+    res.json({ success: true, message: 'Logged out successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/notes', verifyToken, async (req, res, next) => {
   const { username } = req.user;
   const { page = 1, limit = 10 } = req.query;
   const offset = (page - 1) * limit;
-  db.all('SELECT id, note, date FROM notes WHERE username = ? ORDER BY date DESC LIMIT ? OFFSET ?', 
-    [username, parseInt(limit), parseInt(offset)], (err, rows) => {
-      if (err) return next(err);
-      db.get('SELECT COUNT(*) as total FROM notes WHERE username = ?', [username], (err, countRow) => {
-        if (err) return next(err);
-        res.json({ 
-          success: true, 
-          notes: rows || [], 
-          pagination: { 
-            page: parseInt(page), 
-            limit: parseInt(limit), 
-            total: countRow.total 
-          }
-        });
-      });
+  try {
+    const [rows] = await pool.query(
+      'SELECT id, note, date FROM notes WHERE username = ? ORDER BY date DESC LIMIT ? OFFSET ?',
+      [username, parseInt(limit), parseInt(offset)]
+    );
+    const [[countRow]] = await pool.query('SELECT COUNT(*) as total FROM notes WHERE username = ?', [username]);
+    res.json({
+      success: true,
+      notes: rows || [],
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: countRow.total
+      }
     });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/notes', verifyToken, (req, res, next) => {
+app.post('/api/notes', verifyToken, async (req, res, next) => {
   const { note } = req.body;
   const { username } = req.user;
   if (!note) return res.status(400).json({ success: false, message: 'Note is required' });
   const sanitizedNote = sanitizeHtml(note, { allowedTags: [], allowedAttributes: {} });
   const date = new Date().toISOString().split('T')[0];
-  db.run('INSERT INTO notes (username, note, date) VALUES (?, ?, ?)', [username, sanitizedNote, date], function(err) {
-    if (err) return next(err);
-    res.json({ success: true, message: 'Note saved', id: this.lastID });
-  });
+  try {
+    const [result] = await pool.query(
+      'INSERT INTO notes (username, note, date) VALUES (?, ?, ?)',
+      [username, sanitizedNote, date]
+    );
+    res.json({ success: true, message: 'Note saved', id: result.insertId });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.put('/api/notes/:id', verifyToken, (req, res, next) => {
+app.put('/api/notes/:id', verifyToken, async (req, res, next) => {
   const { note } = req.body;
   const { id } = req.params;
   const { username } = req.user;
   if (!note) return res.status(400).json({ success: false, message: 'Note is required' });
   const sanitizedNote = sanitizeHtml(note, { allowedTags: [], allowedAttributes: {} });
-  db.run('UPDATE notes SET note = ? WHERE id = ? AND username = ?', [sanitizedNote, id, username], function(err) {
-    if (err) return next(err);
-    if (this.changes === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
+  try {
+    const [result] = await pool.query(
+      'UPDATE notes SET note = ? WHERE id = ? AND username = ?',
+      [sanitizedNote, id, username]
+    );
+    if (result.affectedRows === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
     res.json({ success: true, message: 'Note updated' });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.delete('/api/notes/:id', verifyToken, (req, res, next) => {
+app.delete('/api/notes/:id', verifyToken, async (req, res, next) => {
   const { id } = req.params;
   const { username } = req.user;
-  db.run('DELETE FROM notes WHERE id = ? AND username = ?', [id, username], function(err) {
-    if (err) return next(err);
-    if (this.changes === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
+  try {
+    const [result] = await pool.query(
+      'DELETE FROM notes WHERE id = ? AND username = ?',
+      [id, username]
+    );
+    if (result.affectedRows === 0) return res.status(404).json({ success: false, message: 'Note not found or unauthorized' });
     res.json({ success: true, message: 'Note deleted' });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// Favorites Endpoints
-app.get('/api/favorites', verifyToken, (req, res, next) => {
+app.get('/api/favorites', verifyToken, async (req, res, next) => {
   const { username } = req.user;
   const { page = 1, limit = 10 } = req.query;
   const offset = (page - 1) * limit;
-  db.all('SELECT newspaper_id FROM favorites WHERE username = ? LIMIT ? OFFSET ?', 
-    [username, parseInt(limit), parseInt(offset)], (err, rows) => {
-      if (err) return next(err);
-      db.get('SELECT COUNT(*) as total FROM favorites WHERE username = ?', [username], (err, countRow) => {
-        if (err) return next(err);
-        res.json({ 
-          success: true, 
-          favorites: rows.map(row => row.newspaper_id), 
-          pagination: { 
-            page: parseInt(page), 
-            limit: parseInt(limit), 
-            total: countRow.total 
-          }
-        });
-      });
+  try {
+    const [rows] = await pool.query(
+      'SELECT newspaper_id FROM favorites WHERE username = ? LIMIT ? OFFSET ?',
+      [username, parseInt(limit), parseInt(offset)]
+    );
+    const [[countRow]] = await pool.query('SELECT COUNT(*) as total FROM favorites WHERE username = ?', [username]);
+    res.json({
+      success: true,
+      favorites: rows.map(row => row.newspaper_id),
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: countRow.total
+      }
     });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/favorites', verifyToken, (req, res, next) => {
+app.post('/api/favorites', verifyToken, async (req, res, next) => {
   const { newspaper_id } = req.body;
   const { username } = req.user;
   if (!newspaper_id) return res.status(400).json({ success: false, message: 'Newspaper ID is required' });
-  db.run('INSERT OR IGNORE INTO favorites (username, newspaper_id) VALUES (?, ?)', [username, newspaper_id], (err) => {
-    if (err) return next(err);
+  try {
+    await pool.query(
+      'INSERT IGNORE INTO favorites (username, newspaper_id) VALUES (?, ?)',
+      [username, newspaper_id]
+    );
     res.json({ success: true, message: 'Newspaper added to favorites' });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.delete('/api/favorites/:newspaper_id', verifyToken, (req, res, next) => {
+app.delete('/api/favorites/:newspaper_id', verifyToken, async (req, res, next) => {
   const { newspaper_id } = req.params;
   const { username } = req.user;
-  db.run('DELETE FROM favorites WHERE username = ? AND newspaper_id = ?', [username, newspaper_id], function(err) {
-    if (err) return next(err);
-    if (this.changes === 0) return res.status(404).json({ success: false, message: 'Favorite not found' });
+  try {
+    const [result] = await pool.query(
+      'DELETE FROM favorites WHERE username = ? AND newspaper_id = ?',
+      [username, newspaper_id]
+    );
+    if (result.affectedRows === 0) return res.status(404).json({ success: false, message: 'Favorite not found' });
     res.json({ success: true, message: 'Newspaper removed from favorites' });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// User Preferences
-app.post('/api/preferences', verifyToken, (req, res, next) => {
+app.post('/api/visits', verifyToken, async (req, res, next) => {
+  const { newspaper_id } = req.body;
+  const { username } = req.user;
+  if (!newspaper_id) return res.status(400).json({ success: false, message: 'Newspaper ID is required' });
+  const visit_date = new Date().toISOString();
+  try {
+    await pool.query(
+      'INSERT INTO visits (username, newspaper_id, visit_date) VALUES (?, ?, ?)',
+      [username, newspaper_id, visit_date]
+    );
+    res.json({ success: true, message: 'Visit recorded' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/visits', verifyToken, async (req, res, next) => {
+  const { username } = req.user;
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+  try {
+    const [rows] = await pool.query(
+      'SELECT newspaper_id, visit_date FROM visits WHERE username = ? ORDER BY visit_date DESC LIMIT ? OFFSET ?',
+      [username, parseInt(limit), parseInt(offset)]
+    );
+    const [[countRow]] = await pool.query('SELECT COUNT(*) as total FROM visits WHERE username = ?', [username]);
+    res.json({
+      success: true,
+      visits: rows || [],
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: countRow.total
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/preferences', verifyToken, async (req, res, next) => {
   const { headline_sources } = req.body;
   const { username } = req.user;
   if (!Array.isArray(headline_sources)) return res.status(400).json({ success: false, message: 'Headline sources must be an array' });
   const sources = JSON.stringify(headline_sources);
-  db.run('INSERT OR REPLACE INTO preferences (username, headline_sources) VALUES (?, ?)', [username, sources], (err) => {
-    if (err) return next(err);
+  try {
+    await pool.query(
+      'INSERT INTO preferences (username, headline_sources) VALUES (?, ?) ON DUPLICATE KEY UPDATE headline_sources = ?',
+      [username, sources, sources]
+    );
     res.json({ success: true, message: 'Preferences updated' });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get('/api/preferences', verifyToken, (req, res, next) => {
+app.get('/api/preferences', verifyToken, async (req, res, next) => {
   const { username } = req.user;
-  db.get('SELECT headline_sources FROM preferences WHERE username = ?', [username], (err, row) => {
-    if (err) return next(err);
-    res.json({ 
-      success: true, 
-      headline_sources: row ? JSON.parse(row.headline_sources) : [] 
+  try {
+    const [rows] = await pool.query('SELECT headline_sources FROM preferences WHERE username = ?', [username]);
+    const row = rows[0];
+    res.json({
+      success: true,
+      headline_sources: row ? JSON.parse(row.headline_sources) : []
     });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// Newspapers Endpoint
 app.get('/api/newspapers', (req, res) => {
   const enhancedNewspapers = newspapers.map(n => ({
     ...n,
@@ -631,14 +538,19 @@ app.get('/api/newspapers', (req, res) => {
   res.json(enhancedNewspapers);
 });
 
-// Updated News Headlines Endpoint
 app.get('/api/headlines', async (req, res, next) => {
+  const cacheKey = 'top-headlines';
+  const cached = headlineCache.get(cacheKey);
+  if (cached && cached.expiry > Date.now()) {
+    console.log('Serving top headlines from cache');
+    return res.json({ success: true, headlines: cached.data });
+  }
+
   try {
     console.log('Fetching headlines from NewsAPI with query: { q: "news" }');
-    const response = await newsapi.v2.topHeadlines({
-      q: 'news', // Broad search for any news
-      pageSize: 5
-    });
+    const response = await enqueueNewsAPIRequest(() =>
+      newsapi.v2.topHeadlines({ q: 'news', pageSize: 5 })
+    );
     console.log('Full NewsAPI response:', JSON.stringify(response, null, 2));
     if (response.status !== 'ok') throw new Error(`NewsAPI response not OK: ${response.status}`);
     
@@ -650,6 +562,13 @@ app.get('/api/headlines', async (req, res, next) => {
       publishedAt: a.publishedAt || null
     }));
     console.log('Headlines fetched:', headlines);
+
+    // Cache the response
+    headlineCache.set(cacheKey, {
+      data: headlines,
+      expiry: Date.now() + CACHE_DURATION
+    });
+
     if (headlines.length === 0) {
       console.warn('No articles returned from NewsAPI. Using mock data instead.');
       const mockHeadlines = [
@@ -667,20 +586,136 @@ app.get('/api/headlines', async (req, res, next) => {
       { title: 'Weather Update: Rain Expected', source: 'Weather Today', url: '#', urlToImage: 'https://via.placeholder.com/150', publishedAt: '2025-04-07' },
       { title: 'Tech Breakthrough Announced', source: 'Tech Times', url: '#', urlToImage: 'https://via.placeholder.com/150', publishedAt: '2025-04-07' },
     ];
-    res.json({ success: true, headlines: mockHeadlines, message: 'Using fallback data due to API error' });
+    res.json({ success: true, headlines: mockHeadlines });
   }
 });
 
-// Start Server
+app.get('/api/newspaper-headlines/:newspaperId', async (req, res, next) => {
+  const { newspaperId } = req.params;
+  const cacheKey = `headlines-${newspaperId}`;
+  const cached = headlineCache.get(cacheKey);
+  if (cached && cached.expiry > Date.now()) {
+    console.log(`Serving headlines for ${newspaperId} from cache`);
+    return res.json({ success: true, headlines: cached.data });
+  }
+
+  try {
+    const newspaper = newspapers.find(n => n.id === newspaperId);
+    if (!newspaper) {
+      return res.status(404).json({ success: false, message: 'Newspaper not found' });
+    }
+    const sourceId = newspaper.sourceId;
+    if (!sourceId) {
+      console.log(`No valid sourceId for ${newspaperId}. Using fallback headlines.`);
+      return res.json({
+        success: true,
+        headlines: [
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' }
+        ]
+      });
+    }
+    const response = await enqueueNewsAPIRequest(() =>
+      newsapi.v2.everything({ sources: sourceId, pageSize: 3, sortBy: 'publishedAt' })
+    );
+    console.log(`NewsAPI response for ${sourceId}:`, JSON.stringify(response, null, 2));
+    if (response.status !== 'ok') throw new Error(`NewsAPI response not OK: ${response.status}`);
+    
+    const headlines = response.articles.map(a => ({
+      title: a.title || 'No title',
+      url: a.url || '#',
+      publishedAt: a.publishedAt || null
+    }));
+
+    // Cache the response
+    headlineCache.set(cacheKey, {
+      data: headlines,
+      expiry: Date.now() + CACHE_DURATION
+    });
+
+    if (headlines.length === 0) {
+      console.warn(`No headlines for ${sourceId}. Using fallback.`);
+      return res.json({
+        success: true,
+        headlines: [
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+          { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' }
+        ]
+      });
+    }
+    res.json({ success: true, headlines });
+  } catch (error) {
+    console.error(`Error fetching headlines for ${newspaperId}:`, error.message);
+    res.json({
+      success: true,
+      headlines: [
+        { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+        { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' },
+        { title: 'Headlines not available', url: '#', publishedAt: '2025-04-20' }
+      ]
+    });
+  }
+});
+
+app.get('/api/active-users', verifyToken, verifyAdmin, async (req, res, next) => {
+  try {
+    // Remove expired sessions
+    await pool.query('DELETE FROM active_sessions WHERE expiry < ?', [Date.now()]);
+    const [rows] = await pool.query(
+      'SELECT username, expiry FROM active_sessions ORDER BY expiry DESC'
+    );
+    res.json({
+      success: true,
+      activeUsers: rows.map(row => ({
+        username: row.username,
+        expiresAt: new Date(row.expiry).toISOString()
+      }))
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/login-history', verifyToken, verifyAdmin, async (req, res, next) => {
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+  try {
+    const [rows] = await pool.query(
+      'SELECT username, login_time FROM login_events ORDER BY login_time DESC LIMIT ? OFFSET ?',
+      [parseInt(limit), parseInt(offset)]
+    );
+    const [[countRow]] = await pool.query('SELECT COUNT(*) as total FROM login_events');
+    res.json({
+      success: true,
+      loginHistory: rows.map(row => ({
+        username: row.username,
+        loginTime: row.login_time
+      })),
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: countRow.total
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-// Graceful Shutdown
-process.on('SIGINT', () => {
-  db.close((err) => {
-    if (err) console.error('Error closing database:', err.message);
-    console.log('Database closed.');
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received. Closing server...');
+  try {
+    await pool.end();
+    console.log('MySQL connection pool closed.');
     process.exit(0);
-  });
+  } catch (err) {
+    console.error('Error closing MySQL pool:', err.message);
+    process.exit(1);
+  }
 });
